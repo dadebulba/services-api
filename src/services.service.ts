@@ -60,7 +60,7 @@ export class ServicesService {
     async findAllVersions(id: string, params: FindAllQueryDTO): Promise<{items: Version[], offset: number, total: number}> {
         let offset = params.offset ?? 0
         let limit = params.limit ?? 10
-        let sort = params.sort ?? 'name'
+        let sort = params.sort ?? 'id'
         let order = params.order ?? 'ASC'
         let _id = parseInt(id)
 
