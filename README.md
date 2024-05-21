@@ -1,42 +1,35 @@
 # Services REST API NestJS
 
 ## Description
-The project was developed using the following tech stack:
-- Postgres v12
-- Node.js v16
-- Nest.js v6.10
-- TypeORM v0.2
-- TypeScript
 
----
 The project includes two main REST APIs to comply with [Story requirements](https://www.figma.com/file/zeaWiePnc3OCe34I4oZbzN/Service-Card-List?node-id=0%3A1):
-  - Services (available under `/services` endpoint)
-  - Versions (available under `/versions` endpoint)
+  - Services (available under `/services` path)
+  - Versions (available under `/versions` path)
 
-All basic CRUD operations are implemented for both Services and Versions (see next section). 
+All basic CRUD operations are implemented for both Services and Versions (see API doc section). 
 
-Furthermore, all the POST, PUT and DELETE requests are protected using an api-key (i.e. `supersecret`). This auth method has been implemented since I expect another service to provide user managment functionalities including the login methods to fetch the required API key. In fact the idea is to keep the Services APIs as a Microservice responsible for the management of Services with linked versions only. This doesn't prevent it to interact with others Microservices.
+Furthermore, all the POST, PUT and DELETE requests are protected using an api-key (i.e. `supersecret`). This auth method has been implemented since I expect another service to provide user management functionalities including the login methods to fetch the required API key. In fact, the idea is to keep the Services APIs as a Microservice responsible only for the management of Services with linked versions. This doesn't prevent it from interacting with other Microservices.
 
-Another design implementation cosists in the return only of ids of versions linked with each service when calling the `GET /services` or `GET /services/:id` APIs. This decision has been made to prevent higher resource usage than required when showing up only the dashboard where the details of versions are not relevant. If we want to display the actual versions details linked with a service, the API `GET /services/:id/versions` can be used. 
+Another design implementation consists of only returning IDs of versions linked with each service when calling the `GET /services` or `GET /services/:id` APIs. This decision has been made to prevent higher resource usage than required when showing the services in the dashboard where the details of versions are not relevant. If we want to display the actual versions detail linked with a service, the API `GET /services/:id/versions` can be used. 
 
 Moreover, all the user inputs are validated to prevent errors. If a wrong or unexpected parameter is used, a `400 - Bad Request` response is returned highlighting the error.
 
-Finally, to allow pagination, when calling the `GET /services` endpoint a limit on the number of returned items can be specified as query param, then a list of items along with an offset and total number of elements is returned. Thanks to this design decision, the frontend developer is free to choose the amount of items and pages to display according to various screen sizes.
+Finally, to allow pagination, when calling the `GET /services` endpoint, a limit on the number of returned items can be specified as a query param, then a list of items along with an offset and total number of elements is returned. Thanks to this design decision, the developer is free to choose the number of items and pages to display according to his requirements.
 
 
 ## Quickstart
 
-You can run the project by simply running the docker-compose, the REST APIs will be exposed on `http://localhost:3000`
+Clone the project in your local machine. Then you can start the project by simply running the docker-compose file, the server will start on `http://localhost:3000`
 
 ```bash
 $ cd services-api
 $ docker compose up
 ```
 
-The command will deploy the actual services-api and a Postgres instance with some mock data for testing purpose.
+The command will deploy the actual services-api and a Postgres instance with some mock data for testing purposes.
 
 ## REST API Docs
-All the API calls can be imported in [Insomnia.rest](https://insomnia.rest) using the file `InsomniaServicesAssignmentBulbarelli.json` present in the root of the project.
+All the API calls can be imported in [Insomnia.rest](https://insomnia.rest) using the file `InsomniaServicesAssignmentBulbarelli.json` present in the root of the project (https://github.com/dadebulba/services-api/blob/main/InsomniaServicesAssignmentBulbarelli.json).
 
 ### Services APIs
 
@@ -54,7 +47,7 @@ Supported attributes:
 | `sort`              | string | No       | Which field to order by. | id
 | `order`              | 'ASC'/'DESC' | No       | Ascending or Descending order. | ASC
 
-If successful, returns list of services with offset and total number of items. 
+If successful, returns a list of services with offset and total number of items. 
 
 Example response:
 
@@ -128,7 +121,7 @@ Supported attributes:
 | `order`              | 'ASC'/'DESC' | No       | Ascending or Descending order. | ASC
 
  
-If successful, returns the service with linked versions details. 
+If successful, returns the service with linked version details. 
 
 Example response:
 
@@ -176,7 +169,7 @@ Supported attributes in JSON:
 | `description`              | string | No       | Service description. | NA
 
  
-If successful, returns the new created service. 
+If successful, returns the newly created service. 
 
 Example response:
 
@@ -299,7 +292,7 @@ Supported attributes in JSON:
 | `service`              | number | Yes       | Service ID linked to version. | NA
 
  
-If successful, returns the updated version. 
+If successful, return the updated version. 
 
 Example response:
 
@@ -330,5 +323,14 @@ If successful, returns `true`, `false` otherwise.
 
 ## Testing
 
-Since the APIs are simple CRUD, I decided to not proceed with unit/integration tests since I prefer to dedicate time for testing business logic that has an higher impact on customer experience.
+Since the APIs are simple CRUD, I decided not to proceed with unit/integration tests. When addressing a new feature/project I prefer to dedicate time to test business logic that has a higher impact on customer experience.
 However as a testing plan, some E2E tests can be performed using [Insomnia automated testing](https://insomnia.rest/product/automated-testing)
+
+## Tech Stack
+The project was developed using the following tech stack:
+- Postgres v12
+- Node.js v16
+- Nest.js v6.10
+- TypeORM v0.2
+- TypeScript
+- Docker
